@@ -2,10 +2,12 @@
 #include <string.h>
 #include <stdlib.h>
 
+#define SIZE 100
+
 struct Account {
     char name[40];
-    int id;
     int hashed_id;
+    int value;
     struct Account *next;
     struct Account *former;
 };
@@ -16,8 +18,8 @@ void add_account();
 void delete_account(char **name);
 int hash_id(char *name); //
 void refresh_last_pointer(int id, account *new_account); //refreshed last pointer for each array position
-account *arr[10];
-account *last_accounts[10] = {NULL};
+account *arr[SIZE];
+account *last_accounts[SIZE] = {NULL};
 
 int main(void) {
     return 0;
@@ -42,6 +44,7 @@ void add_account() {
         strcpy(&(last->name), temp_name);
         last->hashed_id = hash;
         last->next = NULL;
+        last->former = NULL;
         refresh_last_pointer(hash, last);
     }
 }
