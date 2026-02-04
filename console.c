@@ -3,32 +3,46 @@
 #include <stdlib.h>
 
 int main() {
+    printf("Instructions: \n");
+    printf("1) SET key:value\n");
+    printf("2) GET key\n");
+    printf("3) DEL key\n");
+    printf("4) SAVE\n");
+    printf("5) Any other: Exit\n\n");
+    int savecounter = 0;
     while (1) {
-        int savecounter = 0;
-        char command[50];
-        printf(">>");
-        scanf(" %s", command);
-        char token = strtok(command, " ");
-        if (token != NULL ) {
-            if (!strcmp(token, "SET") || !(!strcmp(token, "set"))) {
-                
+        char istruction[50];
+        printf(">> ");
+        fgets(istruction, 50, stdin);
+        char command = strtok(istruction, " ");
+        if (command != NULL ) {
+            if (!strcmp(command, "SET") || !(!strcmp(command, "set"))) {
+                char *name = strtok(NULL, " ");
+                int value = atoi(strtok(NULL, " "));
+                add_account(name, value);
             }
-            else if (!strcmp(token, "GET") || !strcmp(token, "get")) {
 
+            else if (!strcmp(command, "GET") || !strcmp(command, "get")) {
+                char *name = strtok(NULL, " ");
+                account *acc = search(hash_id(name), name);
+                print_account(acc);
             }
-            else if (!strcmp(token, "DEL") || !strcmp(token, "del")) {
 
+            else if (!strcmp(command, "DEL") || !strcmp(command, "del")) {
+                char *name = strtok(NULL, " ");
+                delete(name);
             }
-            else if(!strcmp(token, "SAVE") || !strcmp(token, "save")) {
-
+            else if(!strcmp(command, "SAVE") || !strcmp(command, "save")) {
+                savecounter++;
             }
-            else if(!strcmp(token, "SAVE") || !strcmp(token, "save")) {
-                if (savecounter == 0) printf("Are you sure to exit withoout saving? ") {
-
+            else if(!strcmp(command, "EXIT") || !strcmp(command, "exit")) {
+                if (savecounter == 0) {
+                    printf("Are you sure to exit withoout saving? y/n");
                 }
+                else exit(0);
             }
             else {
-                puts("Command not found");
+                puts("Error: Command not found");
                 continue;
             }
         }
