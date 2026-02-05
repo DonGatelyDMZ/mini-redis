@@ -14,18 +14,17 @@ int main() {
         char istruction[50];
         printf(">> ");
         fgets(istruction, 50, stdin);
-        char command = strtok(istruction, " ");
+        char *command = strtok(istruction, " ");
         if (command != NULL ) {
             if (!strcmp(command, "SET") || !(!strcmp(command, "set"))) {
-                char *name = strtok(NULL, " ");
+                char *name = strtok(NULL, ":");
                 int value = atoi(strtok(NULL, " "));
                 add_account(name, value);
             }
 
             else if (!strcmp(command, "GET") || !strcmp(command, "get")) {
                 char *name = strtok(NULL, " ");
-                account *acc = search(hash_id(name), name);
-                print_account(acc);
+                print_account(search(hash_id(name), name));
             }
 
             else if (!strcmp(command, "DEL") || !strcmp(command, "del")) {
