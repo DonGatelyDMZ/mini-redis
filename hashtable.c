@@ -79,8 +79,16 @@ int hash_id(char *name) {
     return sum%SIZE;
 }
 
-void delete_account(char *name) { //todo: add cases 1) first one 2) last one
+void delete_account(char *name) {
     account *acc = search(hash_id(name), name);
+    if (acc == first_accounts[hash_id(name)]) {
+        first_accounts[hash_id(name)] = acc->next;
+        free(acc);
+    }
+    else if (acc == last_accounts[hash_id(name)]) {
+        last_accounts[hash_id(name)] = acc->former;
+        free(acc);
+    }
     if (acc != NULL) {
         acc->former->next = acc->next;
         free(acc);
@@ -90,7 +98,7 @@ void delete_account(char *name) { //todo: add cases 1) first one 2) last one
 account* search(int hashed_id, char *name) {
     account *start = first_accounts[hashed_id];
     if (start == NULL) {
-        puts("Account does not exists");
+        puts("Account does not exist");
         return NULL;
     }
     account **curr = &start;
