@@ -18,19 +18,17 @@ typedef struct Account account;
 - add_account: adds an account
 - delete_account: deletes an account
 - hash_id: gives an id based on the account's name
-- refresh_last_pointer: for every position in the table, it keeps the last account pointer
-- search: looks for an account by his name
+- search: looks for an account by its name
 - print_account: you know
 */
 void add_account(char name[40], int value);
 void delete_account(char *name);
 int hash_id(char *name); //
-void refresh_last_pointer(int id, account *new_account);
 account* search(int hashed_id, char *name);
 void print_account(account *acc);
+void save(void);
 
-account *first_accounts[SIZE] = {NULL};
-account *last_accounts[SIZE] = {NULL};
+account *stack[SIZE] = {NULL};
 
 int main(void) {
     return 0;
@@ -38,41 +36,23 @@ int main(void) {
 
 void add_account(char name[40], int value) {
     int hash = hash_id(name);
-    account *last = last_accounts[hash];
-    if (last == NULL){
-        last = malloc(sizeof(account));
-        strcpy(last->name, name);
-        last->hashed_id = hash;
-        last->next = NULL;
-        last->former = NULL;
-        last->value = value;
-        first_accounts[hash] = last;
-        refresh_last_pointer(hash, last);
-    }
-    else if (last->next == NULL) {
-        account *new_account = malloc(sizeof(account));
-        strcpy(new_account->name, name);
-        new_account->hashed_id = hash;
-        new_account->next = NULL;
-        new_account->former = last;
-        new_account->value = value;
-        refresh_last_pointer(hash, new_account);
-    }
-}
+    account *new_node = malloc(sizeof(account));
+    strcpy(new_node->name, name);
 
-void refresh_last_pointer(int id, account *new_account) {
-    account *temp = last_accounts[id];
-    if (temp == NULL) {
-        last_accounts[id] = new_account;
+    new_node->value = value;
+    new_node->hashed_id = hash;
+    new_node->next = stack[hash];
+    if (stack[hash] != NULL) {
+        stack[hash]->former = new_node;
     }
-    temp->next = new_account;
-    last_accounts[id] = new_account;
+    new_node->former = NULL;
+    stack[hash] = new_node;
 }
 
 int hash_id(char *name) {
     int sum = 0;
     int k = 0;
-    while (*(name + k) != "/0") {
+    while (*(name + k) != '\0') {
         sum+=(int)*(name+k);
         k++;
     }
@@ -81,39 +61,33 @@ int hash_id(char *name) {
 
 void delete_account(char *name) {
     account *acc = search(hash_id(name), name);
-    if (acc == first_accounts[hash_id(name)]) {
-        first_accounts[hash_id(name)] = acc->next;
+    if (acc == stack[hash_id(name)]) {
+        stack[hash_id(name)] = acc->next;
         free(acc);
     }
-    else if (acc == last_accounts[hash_id(name)]) {
-        last_accounts[hash_id(name)] = acc->former;
+    else if (acc->next == NULL) {
+        acc->former->next = NULL;
         free(acc);
     }
-    if (acc != NULL) {
+    else if (acc != NULL) {
         acc->former->next = acc->next;
         free(acc);
     }
 }
 
 account* search(int hashed_id, char *name) {
-    account *start = first_accounts[hashed_id];
-    if (start == NULL) {
-        puts("Account does not exist");
-        return NULL;
+    account *curr = stack[hashed_id];
+    while (curr != NULL) {
+        if (!strcmp(curr->name, name)) return curr;
+        curr = curr->next;
     }
-    account **curr = &start;
-    char test[40];
-    strcpy(test, (*curr)->name);
-    while (strcmp((*curr)->name, name) != 0) {
-        if (*curr == last_accounts[hashed_id]) {
-            puts("Account does not exists");
-            return NULL;
-        }
-        else *curr = (*curr)->next;
-    }
-    return *curr;
+    return NULL;
 }
 
 void print_account(account *acc) {
     printf("Name: %s\nValue: %d\n", acc->name, acc->value);
+}
+
+void save(void) {
+    
 }
