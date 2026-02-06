@@ -70,7 +70,13 @@ void refresh_last_pointer(int id, account *new_account) {
 }
 
 int hash_id(char *name) {
-    return ((int)*name)%SIZE;
+    int sum = 0;
+    int k = 0;
+    while (*(name + k) != "/0") {
+        sum+=(int)*(name+k);
+        k++;
+    }
+    return sum%SIZE;
 }
 
 void delete_account(char *name) { //todo: add cases 1) first one 2) last one
