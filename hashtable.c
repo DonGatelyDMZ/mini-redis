@@ -26,7 +26,7 @@ void delete_account(char *name);
 int hash_id(char *name); //
 account* search(int hashed_id, char *name);
 void print_account(account *acc);
-int save(void);
+void save(void);
 void load(void);
 
 account *stack[SIZE] = {NULL};
@@ -89,29 +89,24 @@ void print_account(account *acc) {
     printf("Name: %s\nValue: %d\n", acc->name, acc->value);
 }
 
-int save(void) {
+void save(void) {
     FILE *database = fopen("dump.db", "w+");
     if (database == NULL) {
         perror("absent database");
-        return 1;
+        return;
     }
     for (size_t i = 0; i < SIZE; i++) {
         account *sav_acc = stack[i];
         while (sav_acc != NULL) {
-            fprintf(sav_acc, "%s %d\n", sav_acc->name, sav_acc->value);
+            fprintf(database, "%s %d\n", sav_acc->name, sav_acc->value);
             sav_acc = sav_acc->next;
         }
     }
     fclose(database);
-    return 0;
 }
 
 void load(void) {
-    FILE *database = fopen("dump.db", "r+");
-    if (database == NULL) {
-        perror("absent database");
-        return 1;
-    }
+    FILE *database = fopen("dump.db", "r");
     char name[40];
     int value;
     while(fscanf(database, "%s %d", name, &value) != EOF) {
