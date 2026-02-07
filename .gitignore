@@ -1,0 +1,5 @@
+#database davings
+dump.db
+
+#compiled files
+*.o

@@ -32,6 +32,7 @@ int main() {
                 delete(name);
             }
             else if(!strcmp(command, "SAVE") || !strcmp(command, "save")) {
+                save();
                 savecounter++;
             }
             else if(!strcmp(command, "EXIT") || !strcmp(command, "exit")) {

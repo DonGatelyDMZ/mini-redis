@@ -27,6 +27,7 @@ int hash_id(char *name); //
 account* search(int hashed_id, char *name);
 void print_account(account *acc);
 void save(void);
+void load(void);
 
 account *stack[SIZE] = {NULL};
 
@@ -89,5 +90,5 @@ void print_account(account *acc) {
 }
 
 void save(void) {
-    
+    FILE *file = fopen("dump.db", "w+");
 }
