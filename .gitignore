@@ -3,3 +3,7 @@ dump.db
 
 #compiled files
 *.o
+
+#vscode
+.vscode/
+

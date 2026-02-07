@@ -10,6 +10,7 @@ int main() {
     printf("4) SAVE\n");
     printf("5) Any other: Exit\n\n");
     int savecounter = 0;
+    load();
     while (1) {
         char istruction[50];
         printf(">> ");
