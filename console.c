@@ -16,12 +16,13 @@ int main(void) {
         char istruction[50];
         printf(">> ");
         fgets(istruction, 50, stdin);
+        istruction[strcspn(istruction, "\n")] = 0;
         char *command = strtok(istruction, " ");
         if (command != NULL ) {
-            if (!strcmp(command, "SET") || !(!strcmp(command, "set"))) {
+            if (!strcmp(command, "SET") || !(strcmp(command, "set"))) {
                 char *name = strtok(NULL, ":");
                 int value = atoi(strtok(NULL, " "));
-                add_account(name, value);
+                if (name != NULL) add_account(name, value);
             }
 
             else if (!strcmp(command, "GET") || !strcmp(command, "get")) {
@@ -43,8 +44,11 @@ int main(void) {
                 if (savecounter == 0) {
                     char ans[2];
                     printf("Are you sure to exit withoout saving? y/n");
-                    scanf(" %s", ans);
-                    if (!strcmp(ans, "y")) exit(0);
+                    fgets(ans, 2, stdin);
+                    if (!strcmp(ans, "y")) {
+                        exit(0);
+                        istruction[strcspn(ans, "\n")] = 0;
+                    }
                     else {
                         save();
                         exit(0);
