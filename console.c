@@ -32,18 +32,28 @@ int main() {
                 char *name = strtok(NULL, " ");
                 delete(name);
             }
+
             else if(!strcmp(command, "SAVE") || !strcmp(command, "save")) {
                 save();
                 savecounter++;
             }
+
             else if(!strcmp(command, "EXIT") || !strcmp(command, "exit")) {
                 if (savecounter == 0) {
+                    char ans;
                     printf("Are you sure to exit withoout saving? y/n");
+                    scanf(" %c", &ans);
+                    if (!strcmp(ans, 'y')) exit(0);
+                    else {
+                        save();
+                        exit(0);
+                    }
                 }
                 else exit(0);
             }
+
             else {
-                puts("Error: Command not found");
+                perror("Command not found");
                 continue;
             }
         }

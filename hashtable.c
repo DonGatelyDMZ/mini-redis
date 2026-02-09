@@ -20,6 +20,8 @@ typedef struct Account account;
 - hash_id: gives an id based on the account's name
 - search: looks for an account by its name
 - print_account: you know
+- save: loads data from memory to disk
+- load: loads data from disk to memory
 */
 void add_account(char name[40], int value);
 void delete_account(char *name);
