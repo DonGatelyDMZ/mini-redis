@@ -33,10 +33,6 @@ void load(void);
 
 account *stack[SIZE] = {NULL};
 
-int main(void) {
-    return 0;
-}
-
 void add_account(char name[40], int value) {
     int hash = hash_id(name);
     account *new_node = malloc(sizeof(account));

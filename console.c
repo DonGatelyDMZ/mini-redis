@@ -1,8 +1,9 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
+#include "hashtable.h"
 
-int main() {
+int main(void) {
     printf("Instructions: \n");
     printf("1) SET key:value\n");
     printf("2) GET key\n");
@@ -30,7 +31,7 @@ int main() {
 
             else if (!strcmp(command, "DEL") || !strcmp(command, "del")) {
                 char *name = strtok(NULL, " ");
-                delete(name);
+                delete_account(name);
             }
 
             else if(!strcmp(command, "SAVE") || !strcmp(command, "save")) {
@@ -40,10 +41,10 @@ int main() {
 
             else if(!strcmp(command, "EXIT") || !strcmp(command, "exit")) {
                 if (savecounter == 0) {
-                    char ans;
+                    char ans[2];
                     printf("Are you sure to exit withoout saving? y/n");
-                    scanf(" %c", &ans);
-                    if (!strcmp(ans, 'y')) exit(0);
+                    scanf(" %s", ans);
+                    if (!strcmp(ans, "y")) exit(0);
                     else {
                         save();
                         exit(0);
